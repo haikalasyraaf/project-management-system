@@ -11,6 +11,9 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    const IS_ADMIN = 1;
+    const IS_USER  = 2;
+
     protected $fillable = [
         'name',
         'email',

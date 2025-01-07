@@ -31,9 +31,10 @@ class UserController extends Controller
     {
 
         $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make('12341234');
+        $user->name      = $request->name;
+        $user->email     = $request->email;
+        $user->role_type = $request->role_type;
+        $user->password  = Hash::make('12341234');
         $user->save();
 
         return redirect()->route('user.index');
@@ -47,9 +48,10 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $user = User::find($user->id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make('12341234');
+        $user->name      = $request->name;
+        $user->email     = $request->email;
+        $user->role_type = $request->role_type;
+        $user->password  = Hash::make('12341234');
         $user->save();
 
         return redirect()->route('user.index');

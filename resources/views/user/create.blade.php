@@ -32,6 +32,14 @@
                                 <label for="" class="form-label-sm">{{ __('Email Address') }}</label>
                                 <input type="email" name="email" class="form-control" value="{{ old('email') }}" placeholder="{{ __('Enter email address here') }}">
                             </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label-sm">{{ __('Role') }}</label>
+                                <select name="role_type" class="form-control">
+                                    <option selected disabled>Select role</option>
+                                    <option value="1" {{ old('role_type') == 1 ? 'selected' : '' }}>Admin</option>
+                                    <option value="2" {{ old('role_type') == 2 ? 'selected' : '' }}>User</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="text-end">

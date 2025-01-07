@@ -27,7 +27,7 @@
                             <div>
                                 <a href="{{ route('user.create') }}" class="btn btn-primary">
                                     <i data-feather="plus" class="feather me-2"></i>
-                                    {{ __('Add New Record') }}
+                                    {{ __('Add New') }}
                                 </a>
                             </div>
                         </div>
@@ -37,6 +37,7 @@
                                     <th>{{ __('No') }}</th>
                                     <th>{{ __('Name') }}</th>
                                     <th>{{ __('Email') }}</th>
+                                    <th>{{ __('Role') }}</th>
                                     <th>{{ __('Joined On') }}</th>
                                     <th width="5%" class="text-center">{{ __('Action') }}</th>
                                 </tr>
@@ -47,6 +48,7 @@
                                     <td>{{ $users->firstItem() + $index }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
+                                    <td>{{ $user->role_type == 1 ? 'Admin' : 'User' }}</td>
                                     <td>{{ $user->created_at->format('d M Y') }}</td>
                                     <td class="text-center">
                                         <div class="dropdown mx-3">
