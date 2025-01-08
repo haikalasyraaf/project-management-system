@@ -3,7 +3,7 @@
         <i class="sidebar-icon" data-feather="home"></i>
         <span class="ms-3 d-none d-sm-inline">Dashboard</span>
     </a>
-    <a href="#" class="nav-link align-middle">
+    <a href="{{ route('project.index') }}" class="nav-link align-middle {{ request()->routeIs('project.index') ? 'active' : '' }}">
         <i class="sidebar-icon" data-feather="server"></i>
         <span class="ms-3 d-none d-sm-inline">Project</span>
     </a>
