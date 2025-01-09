@@ -17,7 +17,7 @@ class InvoiceController extends Controller
 
         $breadcrumbs = [
             ['link' => "/", 'name' => "Home"],
-            ['link' => "invoices", 'name' => __('Invoice')],
+            ['link' => "/invoices", 'name' => __('Invoice')],
             ['name' => __('List')]
         ];
 
@@ -28,7 +28,13 @@ class InvoiceController extends Controller
     {
         $projects = Project::all();
 
-        return view('invoice.create', compact('projects'));
+        $breadcrumbs = [
+            ['link' => "/", 'name' => "Home"],
+            ['link' => "/invoices", 'name' => __('Invoice')],
+            ['name' => __('List')]
+        ];
+
+        return view('invoice.create', compact('breadcrumbs', 'projects'));
     }
 
     public function store(Request $request)
@@ -50,7 +56,13 @@ class InvoiceController extends Controller
 
     public function show(Invoice $invoice)
     {
-        return view('invoice.show', compact('invoice'));
+        $breadcrumbs = [
+            ['link' => "/", 'name' => "Home"],
+            ['link' => "/invoices", 'name' => __('Invoice')],
+            ['name' => __('List')]
+        ];
+
+        return view('invoice.show', compact('breadcrumbs', 'invoice'));
     }
 
     public function destroy(Invoice $invoice)

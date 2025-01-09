@@ -16,8 +16,8 @@ class ExpenseController extends Controller
 
         $breadcrumbs = [
             ['link' => "/", 'name' => "Home"],
-            ['link' => "projects", 'name' => __('Project')],
-            ['link' => "expenses", 'name' => __('Expense')],
+            ['link' => "/projects", 'name' => __('Project')],
+            ['link' => "/projects/$project->id/expenses", 'name' => __('Expense')],
             ['name' => __('List')]
         ];
 
@@ -26,7 +26,14 @@ class ExpenseController extends Controller
 
     public function create(Project $project)
     {
-        return view('expense.create', compact('project'));
+        $breadcrumbs = [
+            ['link' => "/", 'name' => "Home"],
+            ['link' => "/projects", 'name' => __('Project')],
+            ['link' => "/projects/$project->id/expenses", 'name' => __('Expense')],
+            ['name' => __('Create')]
+        ];
+
+        return view('expense.create', compact('breadcrumbs', 'project'));
     }
 
     public function store(Request $request, Project $project)
@@ -45,7 +52,14 @@ class ExpenseController extends Controller
 
     public function edit(Project $project, Expense $expense)
     {
-        return view('expense.edit', compact('project', 'expense'));
+        $breadcrumbs = [
+            ['link' => "/", 'name' => "Home"],
+            ['link' => "/projects", 'name' => __('Project')],
+            ['link' => "/projects/$project->id/expenses", 'name' => __('Expense')],
+            ['name' => __('Edit')]
+        ];
+
+        return view('expense.edit', compact('breadcrumbs', 'project', 'expense'));
     }
 
     public function update(Request $request, Project $project, Expense $expense)

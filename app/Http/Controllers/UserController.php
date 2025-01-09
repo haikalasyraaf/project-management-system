@@ -16,7 +16,7 @@ class UserController extends Controller
 
         $breadcrumbs = [
             ['link' => "/", 'name' => "Home"],
-            ['link' => "user", 'name' => __('User')],
+            ['link' => "/users", 'name' => __('User')],
             ['name' => __('List')]
         ];
 
@@ -26,7 +26,14 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return view('user.create', compact('roles'));
+
+        $breadcrumbs = [
+            ['link' => "/", 'name' => "Home"],
+            ['link' => "/users", 'name' => __('User')],
+            ['name' => __('Create')]
+        ];
+
+        return view('user.create', compact('breadcrumbs', 'roles'));
     }
 
     public function store(Request $request)
@@ -47,7 +54,14 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
-        return view('user.edit', compact('roles', 'user'));
+
+        $breadcrumbs = [
+            ['link' => "/", 'name' => "Home"],
+            ['link' => "/users", 'name' => __('User')],
+            ['name' => __('Edit')]
+        ];
+
+        return view('user.edit', compact('breadcrumbs', 'roles', 'user'));
     }
 
     public function update(Request $request, User $user)

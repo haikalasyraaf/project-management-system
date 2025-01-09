@@ -15,7 +15,7 @@ class ProjectController extends Controller
 
         $breadcrumbs = [
             ['link' => "/", 'name' => "Home"],
-            ['link' => "projects", 'name' => __('Project')],
+            ['link' => "/projects", 'name' => __('Project')],
             ['name' => __('List')]
         ];
 
@@ -26,7 +26,13 @@ class ProjectController extends Controller
     {
         $users = User::all();
 
-        return view('project.create', compact('users'));
+        $breadcrumbs = [
+            ['link' => "/", 'name' => "Home"],
+            ['link' => "/projects", 'name' => __('Project')],
+            ['name' => __('Create')]
+        ];
+
+        return view('project.create', compact('breadcrumbs', 'users'));
     }
 
     public function store(Request $request)
@@ -50,7 +56,13 @@ class ProjectController extends Controller
     {
         $users = User::all();
 
-        return view('project.edit', compact('project', 'users'));
+        $breadcrumbs = [
+            ['link' => "/", 'name' => "Home"],
+            ['link' => "/projects", 'name' => __('Project')],
+            ['name' => __('Edit')]
+        ];
+
+        return view('project.edit', compact('breadcrumbs', 'project', 'users'));
     }
 
     public function update(Request $request, Project $project)

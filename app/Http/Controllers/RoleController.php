@@ -15,7 +15,7 @@ class RoleController extends Controller
 
         $breadcrumbs = [
             ['link' => "/", 'name' => "Home"],
-            ['link' => "roles", 'name' => __('Role')],
+            ['link' => "/roles", 'name' => __('Role')],
             ['name' => __('List')]
         ];
 
