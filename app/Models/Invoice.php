@@ -15,4 +15,9 @@ class Invoice extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

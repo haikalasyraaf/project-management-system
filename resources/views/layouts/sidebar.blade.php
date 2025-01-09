@@ -1,5 +1,5 @@
 <nav class="w-100 nav nav-pills flex-column pt-3" id="menu">
-    <a href="{{ route('dashboard') }}" class="nav-link align-middle {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+    <a href="{{ route('dashboard.index') }}" class="nav-link align-middle {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
         <i class="sidebar-icon" data-feather="home"></i>
         <span class="ms-3 d-none d-sm-inline">Dashboard</span>
     </a>
