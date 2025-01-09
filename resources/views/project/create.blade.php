@@ -35,11 +35,11 @@
                                 </div>
                                 <div class="col-12 col-md-6 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Start Date') }}</label>
-                                    <input type="date" name="start_date" class="form-control" value="{{ old('start_date') }}">
+                                    <input type="date" id="start_date" name="start_date" class="form-control" value="{{ old('start_date') }}">
                                 </div>
                                 <div class="col-12 col-md-6 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('End Date') }}</label>
-                                    <input type="date" name="end_date" class="form-control" value="{{ old('end_date') }}">
+                                    <input type="date" id="end_date" name="end_date" class="form-control" value="{{ old('end_date') }}">
                                 </div>
                                 <div class="col-12 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Assign User') }}</label>
@@ -53,7 +53,7 @@
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Budget') }}</label>
                                     <div class="input-group">
                                         <span class="input-group-text">RM</span>
-                                        <input type="number" name="budget" class="form-control" placeholder="0.00">
+                                        <input type="number" name="budget" class="form-control" step="0.01" placeholder="0.00">
                                     </div>
                                 </div>
                                 <div class="col-12 mb-2">
@@ -96,6 +96,24 @@
                     }
                 });
             })
+
+            $(document).ready(function () {
+                inputStartEndDate();
+            });
+
+            function inputStartEndDate() {
+                // Update the min value of end_date based on the selected start_date
+                $("#start_date").on("change", function () {
+                    var startDate = $(this).val();
+                    $("#end_date").attr("min", startDate);
+                });
+
+                // Update the max value of start_date based on the selected end_date
+                $("#end_date").on("change", function () {
+                    var endDate = $(this).val();
+                    $("#start_date").attr("max", endDate);
+                });
+            }
         </script>
     @endsection
 </x-app-layout>
