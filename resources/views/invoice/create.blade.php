@@ -27,10 +27,10 @@
                             <div class="row">
                                 <div class="col-12 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Project') }}</label>
-                                    <select name="project_id" class="form-control select2">
+                                    <select name="project_id" id="project_id" class="form-control select2">
                                         <option selected disabled>{{ __('Select project') }}</option>
                                         @foreach ($projects as $project)
-                                            <option value="{{ $project->id }}">{{ $project->title }}</option>
+                                            <option value="{{ $project->id }}" data-budget={{ $project->projectCost() - $project->paidCost() }}>{{ $project->title }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -50,7 +50,7 @@
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Amount') }}</label>
                                     <div class="input-group">
                                         <span class="input-group-text">RM</span>
-                                        <input type="number" name="amount" class="form-control" placeholder="0.00">
+                                        <input type="number" id="amount" name="amount" class="form-control" placeholder="0.00">
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +83,25 @@
                         location.href = '{{ route('invoice.index') }}';
                     }
                 });
-            })
+            });
+
+            $('#amount').on('keyup', function() {
+                var selectedProjectId = $('#project_id').val();
+
+                if (!selectedProjectId) {
+                    return; // If no project is selected, do nothing
+                }
+
+                var selectedOption = $('#project_id option:selected');
+                var projectCost = parseFloat(selectedOption.data('budget'));
+                var currentValue = parseFloat($(this).val());
+
+                if (!isNaN(currentValue)) {
+                    if (currentValue > projectCost) {
+                        $(this).val(projectCost);
+                    }
+                }
+            });
         </script>
     @endsection
 </x-app-layout>

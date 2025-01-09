@@ -37,6 +37,7 @@
                                     <th width="3%" >{{ __('No') }}</th>
                                     <th>{{ __('Title') }}</th>
                                     <th>{{ __('Project Timeline') }}</th>
+                                    <th>{{ __('Budget') }}</th>
                                     <th width="8%" class="text-center">{{ __('Status') }}</th>
                                     <th width="8%" class="text-center">{{ __('Action') }}</th>
                                 </tr>
@@ -48,6 +49,9 @@
                                         <td class="align-middle">{{ $projects->firstItem() + $index }}.</td>
                                         <td class="align-middle">{{ $project->title }}</td>
                                         <td class="align-middle">{{ $project->start_date->format('d/m/Y') }} - {{ $project->end_date->format('d/m/Y') }}</td>
+                                        <td>
+                                            RM{{ number_format($project->budget, 2) }}
+                                        </td>
                                         <td class="text-center align-middle">
                                             @if ($project->status == 0)
                                                 <span class="badge bg-secondary">{{ __('PENDING') }}</span>

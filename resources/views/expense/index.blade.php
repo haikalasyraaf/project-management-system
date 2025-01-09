@@ -35,6 +35,12 @@
                                 </a>
                             </div>
                         </div>
+                        <div class="mb-2 d-flex justify-content-between align-items-center">
+                            <div></div>
+                            <div>
+                                <small>Budget Balance: RM{{ $project->remainingBudget() }}</small>
+                            </div>
+                        </div>
                         <table class="table table-sm table-bordered table-striped">
                             <thead>
                                 <tr>

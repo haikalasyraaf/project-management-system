@@ -30,4 +30,15 @@ class Project extends Model
     {
         return $this->expenses()->where('review_status', 1)->sum('amount');
     }
+
+    public function remainingBudget()
+    {
+        $sumExistingExpenses = $this->expenses()->sum('amount');
+        return $this->budget - $sumExistingExpenses;
+    }
+
+    public function paidCost()
+    {
+        return $this->invoices()->where('status', 1)->sum('amount');
+    }
 }

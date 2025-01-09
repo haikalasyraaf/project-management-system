@@ -43,11 +43,12 @@
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-4 mb-2">
-                                    <label for="" class="form-label form-label-sm mb-0">{{ __('Amount') }}</label>
+                                    <label for="" class="form-label form-label-sm mb-0">{{ __('Amount') }} <small>(Balance Budget: RM{{ $project->remainingBudget() + $expense->amount }})</small></label>
                                     <div class="input-group">
                                         <span class="input-group-text">RM</span>
-                                        <input type="number" name="amount" class="form-control" placeholder="0.00" value="{{ old('amount', $expense->amount) }}">
+                                        <input type="number" id="amount" name="amount" class="form-control" placeholder="0.00" value="{{ old('amount', $expense->amount) }}">
                                     </div>
+                                    <small class="text-warning exceed-warning d-none"><i data-feather="alert-triangle" class="me-2"></i>Amount entered exceeding the budget</small>
                                 </div>
                                 <div class="col-12 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Attachment') }}</label>
@@ -83,7 +84,18 @@
                         location.href = '{{ route('expense.index', $project->id) }}';
                     }
                 });
-            })
+            });
+
+            $('#amount').on('keyup', function() {
+                var maxValue = '{{ $project->remainingBudget() + $expense->amount }}';
+                var currentValue = parseFloat($(this).val());
+
+                if (!isNaN(currentValue) && currentValue > 0) {
+                    $('.exceed-warning').toggleClass('d-none', currentValue <= maxValue);
+                } else {
+                    $('.exceed-warning').addClass('d-none');
+                }
+            });
         </script>
     @endsection
 </x-app-layout>
