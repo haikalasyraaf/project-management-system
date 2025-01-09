@@ -28,6 +28,7 @@
                         <p class="mb-0">Invoice Number: {{ $invoice->number }}</p>
                         <p class="mb-0">Invoice Date: {{ $invoice->date->format('Y-m-d') }}</p>
                         <p class="mb-0">Due Date: {{ $invoice->due_date->format('Y-m-d') }}</p>
+                        <p class="mb-0">Status: {{ $invoice->status == 0 ? 'Unpaid' : 'Paid' }}</p>
                         <br>
                         <p class="mb-0">
                             Description: <br>
@@ -55,7 +56,10 @@
             <div class="card">
                 <div class="card-body">
                     <div>
-                        <a href="{{ route('invoice.index') }}" class="w-100 mb-2 btn btn-secondary">{{ __('Back') }}</a>                        
+                        @if ($invoice->status == 0)
+                            <a href="{{ route('invoice.mark-as-paid', $invoice->id) }}" class="w-100 mb-2 btn btn-success">{{ __('Mark As Paid') }}</a>
+                        @endif
+                        <a href="{{ route('invoice.index') }}" class="w-100 mb-2 btn btn-secondary">{{ __('Back') }}</a>
                     </div>
 
                 </div>

@@ -65,6 +65,14 @@ class InvoiceController extends Controller
         return view('invoice.show', compact('breadcrumbs', 'invoice'));
     }
 
+    public function markAsPaid(Invoice $invoice)
+    {
+        $invoice->status = 1;
+        $invoice->save();
+
+        return redirect()->back();
+    }
+
     public function destroy(Invoice $invoice)
     {
         $invoice = Invoice::find($invoice->id);

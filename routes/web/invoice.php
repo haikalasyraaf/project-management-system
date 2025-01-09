@@ -13,6 +13,7 @@ Route::group(['prefix' => 'invoices'], function() {
 
     Route::group(['prefix' => '{invoice}'], function() {
         Route::get('show', [InvoiceController::class, 'show'])->name('invoice.show');
+        Route::get('mark-as-paid', [InvoiceController::class, 'markAsPaid'])->name('invoice.mark-as-paid');
         Route::get('destroy', [InvoiceController::class, 'destroy'])->name('invoice.destroy');
     });
 });

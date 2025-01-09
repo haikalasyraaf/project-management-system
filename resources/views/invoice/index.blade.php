@@ -65,6 +65,13 @@
                                                             <i data-feather="dollar-sign" class="feather me-2"></i> View Invoice
                                                         </a>
                                                     </li>
+                                                    @if ($invoice->status == 0)
+                                                        <li>
+                                                            <a class="dropdown-item" href="{{ route('invoice.mark-as-paid', $invoice->id) }}">
+                                                                <i data-feather="trending-up" class="feather me-2"></i> Mark As Paid
+                                                            </a>
+                                                        </li>
+                                                    @endif
                                                     <li>
                                                         <a class="dropdown-item"
                                                             href="{{ route('invoice.destroy', $invoice->id) }}">
