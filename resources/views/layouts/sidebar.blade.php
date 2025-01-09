@@ -15,4 +15,8 @@
         <i class="sidebar-icon" data-feather="users"></i>
         <span class="ms-3 d-none d-sm-inline">User</span>
     </a>
+    <a href="{{ route('role.index') }}" class="nav-link align-middle {{ request()->routeIs('role.index') ? 'active' : '' }}">
+        <i class="sidebar-icon" data-feather="users"></i>
+        <span class="ms-3 d-none d-sm-inline">Role</span>
+    </a>
 </nav>

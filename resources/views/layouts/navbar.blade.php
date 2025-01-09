@@ -3,7 +3,7 @@
         <div class="d-flex justify-content-end align-items-center">
             <div class="text-end me-3">
                 <span class="fw-bold">{{ Auth::user()->name }}</span><br>
-                <span>{{ Auth::user()->role_type == 1 ? 'Admin' : 'User' }}</span>
+                <span>{{ Auth::user()->role->name ?? 'Unassigned'}}</span>
             </div>
             <div>
                 <div class="dropdown">

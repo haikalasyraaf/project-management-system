@@ -34,10 +34,11 @@
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label-sm">{{ __('Role') }}</label>
-                                <select name="role_type" class="form-control">
+                                <select name="role_id" class="form-control">
                                     <option selected disabled>Select role</option>
-                                    <option value="1" {{ old('role_type', $user->role_type) == 1 ? 'selected' : '' }}>Admin</option>
-                                    <option value="2" {{ old('role_type', $user->role_type) == 2 ? 'selected' : '' }}>User</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->id }}" {{ old('role_id', $user->role->id) == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>                                        
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
