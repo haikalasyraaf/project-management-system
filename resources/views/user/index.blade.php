@@ -25,10 +25,12 @@
                         <div class="mb-2 d-flex justify-content-between align-items-center">
                             <div></div>
                             <div>
-                                <a href="{{ route('user.create') }}" class="btn btn-primary">
-                                    <i data-feather="plus" class="feather me-2"></i>
-                                    {{ __('Add New') }}
-                                </a>
+                                @if(auth()->user()->role->hasPermissionTo('create-user'))
+                                    <a href="{{ route('user.create') }}" class="btn btn-primary">
+                                        <i data-feather="plus" class="feather me-2"></i>
+                                        {{ __('Add New') }}
+                                    </a>
+                                @endif
                             </div>
                         </div>
                         <div class="overflow-x-auto">

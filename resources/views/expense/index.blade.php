@@ -25,10 +25,12 @@
                         <div class="mb-2 d-flex justify-content-between align-items-center">
                             <div></div>
                             <div>
-                                <a href="{{ route('expense.create', $project->id) }}" class="btn btn-sm btn-primary">
-                                    <i data-feather="plus" class="feather me-1"></i>
-                                    {{ __('Add Expense') }}
-                                </a>
+                                @if(auth()->user()->role->hasPermissionTo('create-expense'))
+                                    <a href="{{ route('expense.create', $project->id) }}" class="btn btn-sm btn-primary">
+                                        <i data-feather="plus" class="feather me-1"></i>
+                                        {{ __('Add Expense') }}
+                                    </a>
+                                @endif
                                 <a href="{{ route('project.index') }}" class="btn btn-sm btn-secondary">
                                     <i data-feather="arrow-left" class="feather me-1"></i>
                                     {{ __('Back') }}
