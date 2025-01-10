@@ -68,6 +68,11 @@
                                                                 <i data-feather="dollar-sign" class="feather me-2"></i> View Invoice
                                                             </a>
                                                         </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="{{ route('invoice.download', $invoice->id) }}">
+                                                                <i data-feather="download" class="feather me-2"></i> Download Invoice
+                                                            </a>
+                                                        </li>
                                                         @if ($invoice->status == 0)
                                                             @if(auth()->user()->role->hasPermissionTo('review-invoice'))
                                                                 <li>

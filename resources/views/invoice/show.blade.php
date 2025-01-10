@@ -56,6 +56,7 @@
             <div class="card">
                 <div class="card-body">
                     <div>
+                        <a href="{{ route('invoice.download', $invoice->id) }}" class="w-100 mb-2 btn btn-primary">{{ __('Download') }}</a>
                         @if ($invoice->status == 0)
                             <a href="{{ route('invoice.mark-as-paid', $invoice->id) }}" class="w-100 mb-2 btn btn-success">{{ __('Mark As Paid') }}</a>
                         @endif

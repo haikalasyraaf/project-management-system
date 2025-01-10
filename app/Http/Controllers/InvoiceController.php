@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\Project;
 use App\Services\InvoiceService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -71,6 +72,12 @@ class InvoiceController extends Controller
         ];
 
         return view('invoice.show', compact('breadcrumbs', 'invoice'));
+    }
+
+    public function download(Invoice $invoice)
+    {
+        $pdf = Pdf::loadView('invoice.pdf', ['invoice' => $invoice]);
+        return $pdf->download('invoice.pdf');
     }
 
     public function markAsPaid(Invoice $invoice)
