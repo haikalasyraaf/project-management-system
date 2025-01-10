@@ -12,7 +12,7 @@ Route::group(['prefix' => 'users'], function() {
     });
 
     Route::group(['prefix' => '{user}'], function() {
-        Route::get('destroy', [UserController::class, 'destroy'])->name('user.destroy');
+        Route::post('destroy', [UserController::class, 'destroy'])->name('user.destroy');
 
         Route::group(['prefix' => 'edit'], function() {
             Route::get('', [UserController::class, 'edit'])->name('user.edit');

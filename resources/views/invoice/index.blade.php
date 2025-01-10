@@ -67,18 +67,55 @@
                                                             </a>
                                                         </li>
                                                         @if ($invoice->status == 0)
+                                                            @if(auth()->user()->role->hasPermissionTo('review-invoice'))
+                                                                <li>
+                                                                    <a class="dropdown-item" href="{{ route('invoice.mark-as-paid', $invoice->id) }}">
+                                                                        <i data-feather="trending-up" class="feather me-2"></i> Mark As Paid
+                                                                    </a>
+                                                                </li>
+                                                            @endif
+                                                        @endif
+                                                        @if(auth()->user()->role->hasPermissionTo('delete-invoice'))
                                                             <li>
-                                                                <a class="dropdown-item" href="{{ route('invoice.mark-as-paid', $invoice->id) }}">
-                                                                    <i data-feather="trending-up" class="feather me-2"></i> Mark As Paid
+                                                                <a class="dropdown-item" id="delete-button-{{ $invoice->id }}" href="#">
+                                                                    <i data-feather="trash" class="feather me-2"></i> Delete Invoice
                                                                 </a>
                                                             </li>
+                                                            <script>
+                                                                $('#delete-button-{{ $invoice->id }}').on('click', function() {
+                                                                    Swal.fire({
+                                                                        title: 'Delete this invoice? ',
+                                                                        text: "Please note, this action cannot be undone.",
+                                                                        icon: "question",
+                                                                        showCloseButton: true,
+                                                                        showDenyButton: true,
+                                                                        denyButtonText: 'Cancel',
+                                                                        confirmButtonText: 'Delete'
+                                                                    }).then((result) => {
+                                                                        if (result.isConfirmed) {
+                                                                            $.ajax({
+                                                                                url: "{{ route('invoice.destroy', [$invoice->id,]) }}",
+                                                                                type: 'POST',
+                                                                                data: {
+                                                                                    _token: '{{ csrf_token() }}'
+                                                                                },
+                                                                                success: function() {
+                                                                                    Swal.fire({
+                                                                                        title: "Deleted!",
+                                                                                        text: "This invoice has been deleted successfully.",
+                                                                                        icon: "success",
+                                                                                        showConfirmButton: false,
+                                                                                        timer: 2000
+                                                                                    }).then(() => {
+                                                                                        location.reload();
+                                                                                    });
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                });
+                                                            </script>
                                                         @endif
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('invoice.destroy', $invoice->id) }}">
-                                                                <i data-feather="trash" class="feather me-2"></i> Delete Invoice
-                                                            </a>
-                                                        </li>
                                                     </ul>
                                                 </div>
                                             </td>

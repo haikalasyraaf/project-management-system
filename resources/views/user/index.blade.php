@@ -49,7 +49,7 @@
                                         <td>{{ $users->firstItem() + $index }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
-                                        <td>{{ $user->role_type == 1 ? 'Admin' : 'User' }}</td>
+                                        <td>{{ $user->role->name }}</td>
                                         <td>{{ $user->created_at->format('d M Y') }}</td>
                                         <td class="text-center">
                                             <div class="dropdown mx-3">
@@ -58,19 +58,54 @@
                                                     {{ __('Action') }}
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('user.edit', $user->id) }}">
-                                                            <i data-feather="edit" class="feather me-2"></i> Edit User
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        @if (Auth::user()->id != $user->id)
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('user.destroy', $user->id) }}">
-                                                                <i data-feather="trash" class="feather me-2"></i> Delete User
+                                                    @if (auth()->user()->role->hasPermissionTo('edit-user'))
+                                                        <li>
+                                                            <a class="dropdown-item" href="{{ route('user.edit', $user->id) }}">
+                                                                <i data-feather="edit" class="feather me-2"></i> Edit User
                                                             </a>
-                                                        @endif
-                                                    </li>
+                                                        </li>
+                                                    @endif
+                                                    @if(Auth::user()->id != $user->id && auth()->user()->role->hasPermissionTo('delete-user'))
+                                                        <li>
+                                                            <a class="dropdown-item" id="delete-button-{{ $user->id }}" href="#">
+                                                                <i data-feather="trash" class="feather me-2"></i> Delete user
+                                                            </a>
+                                                        </li>
+                                                        <script>
+                                                            $('#delete-button-{{ $user->id }}').on('click', function() {
+                                                                Swal.fire({
+                                                                    title: 'Delete this user? ',
+                                                                    text: "Please note, this action cannot be undone.",
+                                                                    icon: "question",
+                                                                    showCloseButton: true,
+                                                                    showDenyButton: true,
+                                                                    denyButtonText: 'Cancel',
+                                                                    confirmButtonText: 'Delete'
+                                                                }).then((result) => {
+                                                                    if (result.isConfirmed) {
+                                                                        $.ajax({
+                                                                            url: "{{ route('user.destroy', [$user->id,]) }}",
+                                                                            type: 'POST',
+                                                                            data: {
+                                                                                _token: '{{ csrf_token() }}'
+                                                                            },
+                                                                            success: function() {
+                                                                                Swal.fire({
+                                                                                    title: "Deleted!",
+                                                                                    text: "This user has been deleted successfully.",
+                                                                                    icon: "success",
+                                                                                    showConfirmButton: false,
+                                                                                    timer: 2000
+                                                                                }).then(() => {
+                                                                                    location.reload();
+                                                                                });
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                });
+                                                            });
+                                                        </script>
+                                                    @endif
                                                 </ul>
                                             </div>
                                         </td>
