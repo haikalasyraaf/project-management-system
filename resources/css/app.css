@@ -12,6 +12,10 @@ html, body {
     padding: 25px !important;
 }
 
+.dropdown ul {
+    position: fixed !important;
+}
+
 .feather {
     width: 14px !important;
 }
