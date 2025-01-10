@@ -21,7 +21,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
-                    <form id="project-form">
+                    <form id="expense-form" enctype="multipart/form-data">
                         @csrf
                         <div class="p-6 text-gray-900 dark:text-gray-100">
                             <div class="row">
@@ -64,6 +64,12 @@
                                 </div>
                                 <div class="col-12 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Attachment') }}</label>
+                                    @if (!is_null($expense->file_path))
+                                        <br>
+                                        <small>
+                                            <a href="{{ asset('storage/' . $expense->file_path) }}" download>{{ __('Existing File') }}</a>
+                                        </small>
+                                    @endif
                                     <input type="file" name="attachment" class="form-control">
                                     <span class="text-danger d-none error attachment_error">
                                         <i data-feather='alert-circle' class="mx-2"></i><small class="error_text attachment_error_text"></small>
@@ -89,12 +95,14 @@
     @section('script')
         <script>
             $('#saveButton').on('click', function() {
-                var data = $('#project-form').serialize();
+                var data = new FormData($('#expense-form')[0]);
 
                 $.ajax({
                     url: "{{ route('expense.update', [$project->id, $expense->id]) }}",
                     type: 'POST',
                     data: data,
+                    contentType: false,
+                    processData: false,
                     success: function() {
                         location.href = '{{ route('expense.index', $project->id) }}';
                     },

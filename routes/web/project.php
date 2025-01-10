@@ -30,6 +30,7 @@ Route::group(['prefix' => 'projects'], function() {
         
             Route::group(['prefix' => '{expense}'], function() {
                 Route::post('destroy', [ExpenseController::class, 'destroy'])->name('expense.destroy');
+                Route::get('download', [ExpenseController::class, 'download'])->name('expense.download');
 
                 Route::post('approve', [ExpenseController::class, 'approve'])->name('expense.approve');
                 Route::post('reject', [ExpenseController::class, 'reject'])->name('expense.reject');

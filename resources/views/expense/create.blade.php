@@ -21,7 +21,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
-                    <form id="project-form">
+                    <form id="expense-form" enctype="multipart/form-data">
                         @csrf
                         <div class="p-6 text-gray-900 dark:text-gray-100">
                             <div class="row">
@@ -89,12 +89,14 @@
     @section('script')
         <script>
             $('#saveButton').on('click', function() {
-                var data = $('#project-form').serialize();
+                var data = new FormData($('#expense-form')[0]);
 
                 $.ajax({
                     url: "{{ route('expense.store', $project->id) }}",
                     type: 'POST',
                     data: data,
+                    contentType: false,
+                    processData: false,
                     success: function() {
                         location.href = '{{ route('expense.index', $project->id) }}';
                     },

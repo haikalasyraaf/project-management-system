@@ -7,6 +7,7 @@ use App\Models\ExpenseType;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ExpenseController extends Controller
 {
@@ -42,7 +43,8 @@ class ExpenseController extends Controller
             'description'  => 'required|max:5000',
             'date'         => 'required|date',
             'amount'       => 'required|numeric|min:0',
-            'type'         => 'required|in:travel,equipment,miscellaneous'
+            'type'         => 'required|in:travel,equipment,miscellaneous',
+            'attachment'   => 'file|mimes:jpeg,png,pdf,docx|max:2048',
         ]);
 
         $expense = new Expense();
@@ -52,6 +54,13 @@ class ExpenseController extends Controller
         $expense->type              = $request->type;
         $expense->amount            = $request->amount;
         $expense->created_by        = Auth::user()->id;
+        if ($request->hasFile('attachment')) {
+            $file = $request->file('attachment');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('attachments', $fileName, 'public');
+        
+            $expense->file_path = $path;
+        }
         $expense->save();
 
         return response()->json(['message' => 'success']);
@@ -75,13 +84,25 @@ class ExpenseController extends Controller
             'description'  => 'required|max:5000',
             'date'         => 'required|date',
             'amount'       => 'required|numeric|min:0',
-            'type'         => 'required|in:travel,equipment,miscellaneous'
+            'type'         => 'required|in:travel,equipment,miscellaneous',
+            'attachment'   => 'file|mimes:jpeg,png,pdf,docx|max:2048',
         ]);
 
         $expense->description       = $request->description;
         $expense->date              = $request->date;
         $expense->type              = $request->type;
         $expense->amount            = $request->amount;
+        if ($request->hasFile('attachment')) {
+            if (!is_null($expense->file_path) && Storage::exists('public/' . $expense->file_path)) {
+                Storage::delete('public/' . $expense->file_path);
+            }
+
+            $file = $request->file('attachment');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('attachments', $fileName, 'public');
+
+            $expense->file_path = $path;
+        }
         $expense->save();
 
         return response()->json(['message' => 'success']);
@@ -93,6 +114,17 @@ class ExpenseController extends Controller
         $expense->delete();
 
         return redirect()->back();
+    }
+
+    public function download(Project $project, Expense $expense)
+    {
+        $filePath = storage_path('app/public/' . $expense->file_path);
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        }
+
+        return abort(404, 'File not found');
     }
 
     public function approve(Project $project, Expense $expense)

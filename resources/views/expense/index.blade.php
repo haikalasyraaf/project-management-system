@@ -81,6 +81,13 @@
                                                         {{ __('Action') }}
                                                     </button>
                                                     <ul class="dropdown-menu">
+                                                        @if (!is_null($expense->file_path))
+                                                            <li>
+                                                                <a class="dropdown-item" href="{{ asset('storage/' . $expense->file_path) }}" download>
+                                                                    <i data-feather="download" class="feather me-2"></i> Download File
+                                                                </a>
+                                                            </li>                                                            
+                                                        @endif
                                                         @if ($expense->review_status == 0)
                                                             @if(auth()->user()->role->hasPermissionTo('review-expense'))
                                                                 <li>
