@@ -25,10 +25,9 @@
             <div class="row flex-nowrap">
                 <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-white">
                     <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
-                        <a href="/" class="d-flex align-items-center mb-md-0 me-md-auto text-decoration-none">
-                            <i data-feather="battery-charging" style="width: 35px !important; height: 35px !important" class="me-3"></i>
-                            <span class="d-none d-lg-block fw-bolder text-uppercase h4 mb-0">Test System</span>
-                        </a>
+                        <div class="w-100 text-center">
+                            <a href="/"><x-application-logo style="width: 60px; height: 60px"/></a>   
+                        </div>
                         @include('layouts.sidebar')
                     </div>
                 </div>
