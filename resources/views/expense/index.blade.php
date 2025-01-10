@@ -41,71 +41,73 @@
                                 <small>Budget Balance: RM{{ $project->remainingBudget() }}</small>
                             </div>
                         </div>
-                        <table class="table table-sm table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th width="3%" >{{ __('No') }}</th>
-                                    <th>{{ __('Date') }}</th>
-                                    <th>{{ __('Description') }}</th>
-                                    <th>{{ __('Type') }}</th>
-                                    <th>{{ __('Amount') }}</th>
-                                    <th width="8%" class="text-center">{{ __('Status') }}</th>
-                                    <th width="8%" class="text-center">{{ __('Action') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($expenses->count() > 0)
-                                    @foreach ($expenses as $index => $expense)
+                        <div class="overflow-x-auto">
+                            <table class="table table-sm table-bordered table-striped">
+                                <thead>
                                     <tr>
-                                        <td class="align-middle">{{ $expenses->firstItem() + $index }}.</td>
-                                        <td class="align-middle">{{ $expense->date->format('d/m/Y') }}</td>
-                                        <td class="align-middle">{{ $expense->description }}</td>
-                                        <td class="align-middle">{{ ucfirst($expense->type) }}</td>
-                                        <td class="align-middle">RM{{ $expense->amount }}</td>
-                                        <td class="text-center align-middle">
-                                            @if ($expense->review_status == 0)
-                                                <span class="badge bg-secondary">{{ __('PENDING REVIEW') }}</span>
-                                            @elseif ($expense->review_status == 1)
-                                                <span class="badge bg-warning">{{ __('APPROVED') }}</span>
-                                            @else
-                                                <span class="badge bg-success">{{ __('REJECTED') }}</span>
-                                            @endif
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            <div class="dropdown mx-3">
-                                                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    {{ __('Action') }}
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    <li>
-                                                        <a class="dropdown-item" href="#">
-                                                            <i data-feather="check-square" class="feather me-2"></i> Review Expense
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('expense.edit', [$project->id, $expense->id]) }}">
-                                                            <i data-feather="edit" class="feather me-2"></i> Edit Expense
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('expense.destroy', [$project->id, $expense->id]) }}">
-                                                            <i data-feather="trash" class="feather me-2"></i> Delete Expense
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
+                                        <th width="3%" >{{ __('No') }}</th>
+                                        <th>{{ __('Date') }}</th>
+                                        <th>{{ __('Description') }}</th>
+                                        <th>{{ __('Type') }}</th>
+                                        <th>{{ __('Amount') }}</th>
+                                        <th width="8%" class="text-center">{{ __('Status') }}</th>
+                                        <th width="8%" class="text-center">{{ __('Action') }}</th>
                                     </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="7" class="text-center">No projects available at the moment.</td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                        {{ $expenses->links() }}
+                                </thead>
+                                <tbody>
+                                    @if ($expenses->count() > 0)
+                                        @foreach ($expenses as $index => $expense)
+                                        <tr>
+                                            <td class="align-middle">{{ $expenses->firstItem() + $index }}.</td>
+                                            <td class="align-middle">{{ $expense->date->format('d/m/Y') }}</td>
+                                            <td class="align-middle">{{ $expense->description }}</td>
+                                            <td class="align-middle">{{ ucfirst($expense->type) }}</td>
+                                            <td class="align-middle">RM{{ $expense->amount }}</td>
+                                            <td class="text-center align-middle">
+                                                @if ($expense->review_status == 0)
+                                                    <span class="badge bg-secondary">{{ __('PENDING REVIEW') }}</span>
+                                                @elseif ($expense->review_status == 1)
+                                                    <span class="badge bg-warning">{{ __('APPROVED') }}</span>
+                                                @else
+                                                    <span class="badge bg-success">{{ __('REJECTED') }}</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                <div class="dropdown mx-3">
+                                                    <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        {{ __('Action') }}
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <a class="dropdown-item" href="#">
+                                                                <i data-feather="check-square" class="feather me-2"></i> Review Expense
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="{{ route('expense.edit', [$project->id, $expense->id]) }}">
+                                                                <i data-feather="edit" class="feather me-2"></i> Edit Expense
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="{{ route('expense.destroy', [$project->id, $expense->id]) }}">
+                                                                <i data-feather="trash" class="feather me-2"></i> Delete Expense
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="7" class="text-center">No projects available at the moment.</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                            {{ $expenses->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

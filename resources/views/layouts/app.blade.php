@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="initial-scale=1.0, width=device-width">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
@@ -20,7 +20,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
-        <div class="container-fluid">
+        <div class="wrapper">
             <div class="row flex-nowrap">
                 <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-white">
                     <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
@@ -31,7 +31,7 @@
                         @include('layouts.sidebar')
                     </div>
                 </div>
-                <div class="col" style="padding: 25px">
+                <div class="col">
                     @include('layouts.navbar')
                     <div class="py-4 d-flex align-items-center">
                         <div class="border-end pe-3"><span class="h4">@yield('title')</span></div>

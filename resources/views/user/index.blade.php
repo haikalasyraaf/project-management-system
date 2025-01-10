@@ -31,53 +31,56 @@
                                 </a>
                             </div>
                         </div>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>{{ __('No') }}</th>
-                                    <th>{{ __('Name') }}</th>
-                                    <th>{{ __('Email') }}</th>
-                                    <th>{{ __('Role') }}</th>
-                                    <th>{{ __('Joined On') }}</th>
-                                    <th width="5%" class="text-center">{{ __('Action') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($users as $index => $user)
-                                <tr>
-                                    <td>{{ $users->firstItem() + $index }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ $user->role_type == 1 ? 'Admin' : 'User' }}</td>
-                                    <td>{{ $user->created_at->format('d M Y') }}</td>
-                                    <td class="text-center">
-                                        <div class="dropdown mx-3">
-                                            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                {{ __('Action') }}
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    <a class="dropdown-item" href="{{ route('user.edit', $user->id) }}">
-                                                        <i data-feather="edit" class="feather me-2"></i> Edit User
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    @if (Auth::user()->id != $user->id)
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('user.destroy', $user->id) }}">
-                                                            <i data-feather="trash" class="feather me-2"></i> Delete User
+                        <div class="overflow-x-auto">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>{{ __('No') }}</th>
+                                        <th>{{ __('Name') }}</th>
+                                        <th>{{ __('Email') }}</th>
+                                        <th>{{ __('Role') }}</th>
+                                        <th>{{ __('Joined On') }}</th>
+                                        <th width="5%" class="text-center">{{ __('Action') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($users as $index => $user)
+                                    <tr>
+                                        <td>{{ $users->firstItem() + $index }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->role_type == 1 ? 'Admin' : 'User' }}</td>
+                                        <td>{{ $user->created_at->format('d M Y') }}</td>
+                                        <td class="text-center">
+                                            <div class="dropdown mx-3">
+                                                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                    {{ __('Action') }}
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('user.edit', $user->id) }}">
+                                                            <i data-feather="edit" class="feather me-2"></i> Edit User
                                                         </a>
-                                                    @endif
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        {{ $users->links() }}
+                                                    </li>
+                                                    <li>
+                                                        @if (Auth::user()->id != $user->id)
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('user.destroy', $user->id) }}">
+                                                                <i data-feather="trash" class="feather me-2"></i> Delete User
+                                                            </a>
+                                                        @endif
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            {{ $users->links() }}
+                        </div>
+
                     </div>
                 </div>
             </div>
