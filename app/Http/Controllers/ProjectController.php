@@ -11,7 +11,11 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::paginate(10);
+        if (Auth::user()->role->name == 'Admin') {
+            $projects = Project::paginate(10);
+        } else {
+            $projects = Auth::user()->projects()->paginate(10);
+        }
 
         $breadcrumbs = [
             ['link' => "/", 'name' => "Home"],
