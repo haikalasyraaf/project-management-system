@@ -55,10 +55,23 @@ class PermissionSeeder extends Seeder
             }
         }
 
-        $permissions = Permission::all();
+        $adminPermissions = Permission::all();
         $admin = Role::where('name', 'Admin')->first();
         if($admin) {
-            $admin->syncPermissions($permissions);            
+            $admin->syncPermissions($adminPermissions);            
+        }
+
+        $userPermissions = Permission::whereIn('name', [
+            'view-project', 
+            'view-expense', 
+            'create-expense',
+            'edit-expense',
+            'delete-expense'
+        ])->get();
+
+        $user = Role::where('name', 'User')->first();
+        if($user) {
+            $user->syncPermissions($userPermissions);            
         }
     }
 }
