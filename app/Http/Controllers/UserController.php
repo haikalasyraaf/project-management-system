@@ -83,7 +83,7 @@ class UserController extends Controller
         $user->save();
 
         $role = Role::where('id', $request->role_id)->first();
-        $user->assignRole($role);
+        $user->syncRoles($role);
 
         return redirect()->route('user.index');
     }
