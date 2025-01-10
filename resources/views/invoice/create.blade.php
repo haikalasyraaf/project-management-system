@@ -40,11 +40,11 @@
                                 </div>
                                 <div class="col-12 col-md-4 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Invoice Date') }}</label>
-                                    <input type="date" name="date" class="form-control" value="{{ old('date') }}">
+                                    <input type="date" id="date" name="date" class="form-control" value="{{ old('date') }}">
                                 </div>
                                 <div class="col-12 col-md-4 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Due Date') }}</label>
-                                    <input type="date" name="due_date" class="form-control" value="{{ old('date') }}">
+                                    <input type="date" id="due_date" name="due_date" class="form-control" value="{{ old('date') }}">
                                 </div>
                                 <div class="col-12 col-md-4 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Amount') }}</label>
@@ -83,6 +83,18 @@
                         location.href = '{{ route('invoice.index') }}';
                     }
                 });
+            });
+
+            // Update the min value of end_date based on the selected start_date
+            $("#date").on("change", function () {
+                var startDate = $(this).val();
+                $("#due_date").attr("min", startDate);
+            });
+
+            // Update the max value of start_date based on the selected end_date
+            $("#due_date").on("change", function () {
+                var endDate = $(this).val();
+                $("#date").attr("max", endDate);
             });
 
             $('#amount').on('keyup', function() {
