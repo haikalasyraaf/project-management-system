@@ -80,4 +80,22 @@ class ExpenseController extends Controller
 
         return redirect()->back();
     }
+
+    public function approve(Project $project, Expense $expense)
+    {
+        $expense->review_status = 1;
+        $expense->reviewed_by = Auth::user()->id;
+        $expense->save();
+
+        return response()->json(['message' => 'success']);
+    }
+
+    public function reject(Project $project, Expense $expense)
+    {
+        $expense->review_status = 2;
+        $expense->reviewed_by = Auth::user()->id;
+        $expense->save();
+
+        return response()->json(['message' => 'success']);
+    }
 }

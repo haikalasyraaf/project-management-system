@@ -67,9 +67,9 @@
                                                 @if ($expense->review_status == 0)
                                                     <span class="badge bg-secondary">{{ __('PENDING REVIEW') }}</span>
                                                 @elseif ($expense->review_status == 1)
-                                                    <span class="badge bg-warning">{{ __('APPROVED') }}</span>
+                                                    <span class="badge bg-success">{{ __('APPROVED') }}</span>
                                                 @else
-                                                    <span class="badge bg-success">{{ __('REJECTED') }}</span>
+                                                    <span class="badge bg-danger">{{ __('REJECTED') }}</span>
                                                 @endif
                                             </td>
                                             <td class="text-center align-middle">
@@ -79,21 +79,116 @@
                                                         {{ __('Action') }}
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a class="dropdown-item" href="#">
-                                                                <i data-feather="check-square" class="feather me-2"></i> Review Expense
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ route('expense.edit', [$project->id, $expense->id]) }}">
-                                                                <i data-feather="edit" class="feather me-2"></i> Edit Expense
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ route('expense.destroy', [$project->id, $expense->id]) }}">
-                                                                <i data-feather="trash" class="feather me-2"></i> Delete Expense
-                                                            </a>
-                                                        </li>
+                                                        @if ($expense->review_status == 0)
+                                                            @if(auth()->user()->role->hasPermissionTo('review-expense'))
+                                                                <li>
+                                                                    <a class="dropdown-item" href="#" id="review-button-{{ $expense->id }}">
+                                                                        <i data-feather="check-square" class="feather me-2"></i> Review Expense
+                                                                    </a>
+                                                                </li>                                                                
+                                                            @endif
+                                                            @if(auth()->user()->role->hasPermissionTo('edit-expense'))
+                                                                <li>
+                                                                    <a class="dropdown-item" href="{{ route('expense.edit', [$project->id, $expense->id]) }}">
+                                                                        <i data-feather="edit" class="feather me-2"></i> Edit Expense
+                                                                    </a>
+                                                                </li>                                                                
+                                                            @endif
+                                                            <script>
+                                                                $('#review-button-{{ $expense->id }}').on('click', function() {
+                                                                    Swal.fire({
+                                                                        title: 'Confirm this expense? ',
+                                                                        text: "Please note, this action cannot be undone.",
+                                                                        icon: "question",
+                                                                        showCloseButton: true,
+                                                                        showDenyButton: true,
+                                                                        denyButtonText: 'Reject',
+                                                                        confirmButtonText: 'Approve'
+                                                                    }).then((result) => {
+                                                                        if (result.isConfirmed) {
+                                                                            $.ajax({
+                                                                                url: "{{ route('expense.approve', [$project->id, $expense->id]) }}",
+                                                                                type: 'POST',
+                                                                                data: {
+                                                                                    _token: '{{ csrf_token() }}'
+                                                                                },
+                                                                                success: function() {
+                                                                                    Swal.fire({
+                                                                                        title: "Approved!",
+                                                                                        text: "This expense has been approved.",
+                                                                                        icon: "success",
+                                                                                        showConfirmButton: false,
+                                                                                        timer: 2000
+                                                                                    }).then(() => {
+                                                                                        location.reload();
+                                                                                    });
+                                                                                }
+                                                                            });
+                                                                        } else if(result.isDenied) {
+                                                                            $.ajax({
+                                                                                url: "{{ route('expense.reject', [$project->id, $expense->id]) }}",
+                                                                                type: 'POST',
+                                                                                data: {
+                                                                                    _token: '{{ csrf_token() }}'
+                                                                                },
+                                                                                success: function() {
+                                                                                    Swal.fire({
+                                                                                        title: "Rejected!",
+                                                                                        text: "This expense has been rejected.",
+                                                                                        icon: "error",
+                                                                                        showConfirmButton: false,
+                                                                                        timer: 2000
+                                                                                    }).then(() => {
+                                                                                        location.reload();
+                                                                                    });
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                });
+                                                            </script>
+                                                        @endif
+                                                        @if(auth()->user()->role->hasPermissionTo('delete-expense'))
+                                                            <li>
+                                                                <a class="dropdown-item" id="delete-button-{{ $expense->id }}" href="#">
+                                                                    <i data-feather="trash" class="feather me-2"></i> Delete Expense
+                                                                </a>
+                                                            </li>
+                                                        @endif
+                                                        <script>
+                                                            $('#delete-button-{{ $expense->id }}').on('click', function() {
+                                                                Swal.fire({
+                                                                    title: 'Delete this expense? ',
+                                                                    text: "Please note, this action cannot be undone.",
+                                                                    icon: "question",
+                                                                    showCloseButton: true,
+                                                                    showDenyButton: true,
+                                                                    denyButtonText: 'Cancel',
+                                                                    confirmButtonText: 'Delete'
+                                                                }).then((result) => {
+                                                                    if (result.isConfirmed) {
+                                                                        $.ajax({
+                                                                            url: "{{ route('expense.destroy', [$project->id, $expense->id]) }}",
+                                                                            type: 'POST',
+                                                                            data: {
+                                                                                _token: '{{ csrf_token() }}'
+                                                                            },
+                                                                            success: function() {
+                                                                                Swal.fire({
+                                                                                    title: "Deleted!",
+                                                                                    text: "This expense has been deleted successfully.",
+                                                                                    icon: "success",
+                                                                                    showConfirmButton: false,
+                                                                                    timer: 2000
+                                                                                }).then(() => {
+                                                                                    location.reload();
+                                                                                });
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                });
+                                                            });
+                                                        </script>
                                                     </ul>
                                                 </div>
                                             </td>

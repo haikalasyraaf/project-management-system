@@ -13,7 +13,7 @@ Route::group(['prefix' => 'projects'], function() {
     });
 
     Route::group(['prefix' => '{project}'], function() {
-        Route::get('destroy', [ProjectController::class, 'destroy'])->name('project.destroy');
+        Route::post('destroy', [ProjectController::class, 'destroy'])->name('project.destroy');
 
         Route::group(['prefix' => 'edit'], function() {
             Route::get('', [ProjectController::class, 'edit'])->name('project.edit');
@@ -29,7 +29,10 @@ Route::group(['prefix' => 'projects'], function() {
             });
         
             Route::group(['prefix' => '{expense}'], function() {
-                Route::get('destroy', [ExpenseController::class, 'destroy'])->name('expense.destroy');
+                Route::post('destroy', [ExpenseController::class, 'destroy'])->name('expense.destroy');
+
+                Route::post('approve', [ExpenseController::class, 'approve'])->name('expense.approve');
+                Route::post('reject', [ExpenseController::class, 'reject'])->name('expense.reject');
         
                 Route::group(['prefix' => 'edit'], function() {
                     Route::get('', [ExpenseController::class, 'edit'])->name('expense.edit');

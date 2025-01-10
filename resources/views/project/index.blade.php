@@ -69,22 +69,61 @@
                                                         {{ __('Action') }}
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ route('expense.index', $project->id) }}">
-                                                                <i data-feather="dollar-sign" class="feather me-2"></i> View Expenses
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ route('project.edit', $project->id) }}">
-                                                                <i data-feather="edit" class="feather me-2"></i> Edit Project
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('project.destroy', $project->id) }}">
-                                                                <i data-feather="trash" class="feather me-2"></i> Delete Project
-                                                            </a>
-                                                        </li>
+                                                        @if(auth()->user()->role->hasPermissionTo('view-expense'))
+                                                            <li>
+                                                                <a class="dropdown-item" href="{{ route('expense.index', $project->id) }}">
+                                                                    <i data-feather="dollar-sign" class="feather me-2"></i> View Expenses
+                                                                </a>
+                                                            </li>
+                                                        @endif
+                                                        @if(auth()->user()->role->hasPermissionTo('edit-project'))
+                                                            <li>
+                                                                <a class="dropdown-item" href="{{ route('project.edit', $project->id) }}">
+                                                                    <i data-feather="edit" class="feather me-2"></i> Edit Project
+                                                                </a>
+                                                            </li>
+                                                        @endif
+                                                        @if(auth()->user()->role->hasPermissionTo('delete-project'))
+                                                            <li>
+                                                                <a class="dropdown-item" id="delete-button-{{ $project->id }}" href="#">
+                                                                    <i data-feather="trash" class="feather me-2"></i> Delete Project
+                                                                </a>
+                                                            </li>
+                                                            <script>
+                                                                $('#delete-button-{{ $project->id }}').on('click', function() {
+                                                                    Swal.fire({
+                                                                        title: 'Delete this project? ',
+                                                                        text: "Please note, this action cannot be undone.",
+                                                                        icon: "question",
+                                                                        showCloseButton: true,
+                                                                        showDenyButton: true,
+                                                                        denyButtonText: 'Cancel',
+                                                                        confirmButtonText: 'Delete'
+                                                                    }).then((result) => {
+                                                                        if (result.isConfirmed) {
+                                                                            $.ajax({
+                                                                                url: "{{ route('project.destroy', [$project->id,]) }}",
+                                                                                type: 'POST',
+                                                                                data: {
+                                                                                    _token: '{{ csrf_token() }}'
+                                                                                },
+                                                                                success: function() {
+                                                                                    Swal.fire({
+                                                                                        title: "Deleted!",
+                                                                                        text: "This project has been deleted successfully.",
+                                                                                        icon: "success",
+                                                                                        showConfirmButton: false,
+                                                                                        timer: 2000
+                                                                                    }).then(() => {
+                                                                                        location.reload();
+                                                                                    });
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                });
+                                                            </script>
+                                                        @endif
                                                     </ul>
                                                 </div>
                                             </td>
