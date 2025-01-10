@@ -28,18 +28,30 @@
                                 <div class="col-12 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Title') }}</label>
                                     <input type="text" name="title" class="form-control" value="{{ old('title', $project->title) }}" placeholder="{{ __('Enter project title here') }}">                                    
+                                    <span class="text-danger d-none error title_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text title_error_text"></small>
+                                    </span>
                                 </div>
                                 <div class="col-12 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Description') }}</label>
                                     <textarea name="description" class="form-control" rows="3" placeholder="{{ __('Enter project description here') }}">{{ old('description', $project->description) }}</textarea>                                    
+                                    <span class="text-danger d-none error description_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text description_error_text"></small>
+                                    </span>
                                 </div>
                                 <div class="col-12 col-md-6 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Start Date') }}</label>
                                     <input type="date" id="start_date" name="start_date" class="form-control" value="{{ old('start_date', $project->start_date->format('Y-m-d')) }}">
+                                    <span class="text-danger d-none error start_date_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text start_date_error_text"></small>
+                                    </span>
                                 </div>
                                 <div class="col-12 col-md-6 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('End Date') }}</label>
                                     <input type="date" id="end_date" name="end_date" class="form-control" value="{{ old('end_date', $project->end_date->format('Y-m-d')) }}">
+                                    <span class="text-danger d-none error end_date_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text end_date_error_text"></small>
+                                    </span>
                                 </div>
                                 <div class="col-12 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Assign User') }}</label>
@@ -48,6 +60,9 @@
                                             <option value="{{ $user->id }}" {{ in_array($user->id, $project->users()->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $user->name }}</option>
                                         @endforeach
                                     </select>
+                                    <span class="text-danger d-none error assign_user_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text assign_user_error_text"></small>
+                                    </span>
                                 </div>
                                 <div class="col-12 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Budget') }}</label>
@@ -55,6 +70,9 @@
                                         <span class="input-group-text" id="basic-addon1">RM</span>
                                         <input type="number" name="budget" class="form-control" step="0.01" value="{{ old('budget', $project->budget) }}" placeholder="0.00">
                                     </div>
+                                    <span class="text-danger d-none error budget_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text budget_error_text"></small>
+                                    </span>
                                 </div>
                                 <div class="col-12 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Status') }}</label>
@@ -64,6 +82,9 @@
                                         <option value="1" {{ old('status', $project->status) == 1 ? 'selected' : '' }}>Ongoing</option>
                                         <option value="2" {{ old('status', $project->status) == 2 ? 'selected' : '' }}>Completed</option>
                                     </select>
+                                    <span class="text-danger d-none error status_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text status_error_text"></small>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -93,6 +114,16 @@
                     data: data,
                     success: function() {
                         location.href = '{{ route('project.index') }}';
+                    },
+                    error: function(xhr, status, error) {
+                        if (xhr.status == 422) {
+                            $(".error").addClass('d-none');
+                            $(".error_text").text('');
+                            $.each(xhr.responseJSON.errors, function(key, value) {
+                                $("." + key + "_error").removeClass('d-none');
+                                $("." + key + "_error_text").text(value[0]);
+                            });
+                        }
                     }
                 });
             })

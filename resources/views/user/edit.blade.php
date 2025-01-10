@@ -27,10 +27,16 @@
                             <div class="mb-3">
                                 <label for="" class="form-label-sm">{{ __('Name') }}</label>
                                 <input type="name" name="name" class="form-control" value="{{ old('name', $user->name) }}" placeholder="{{ __('Enter name here') }}">
+                                <span class="text-danger d-none error name_error">
+                                    <i data-feather='alert-circle' class="mx-2"></i><small class="error_text name_error_text"></small>
+                                </span>
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label-sm">{{ __('Email Address') }}</label>
                                 <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" placeholder="{{ __('Enter email address here') }}">
+                                <span class="text-danger d-none error email_error">
+                                    <i data-feather='alert-circle' class="mx-2"></i><small class="error_text email_error_text"></small>
+                                </span>
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label-sm">{{ __('Role') }}</label>
@@ -40,6 +46,9 @@
                                         <option value="{{ $role->id }}" {{ old('role_id', $user->role->id) == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>                                        
                                     @endforeach
                                 </select>
+                                <span class="text-danger d-none error role_id_error">
+                                    <i data-feather='alert-circle' class="mx-2"></i><small class="error_text role_id_error_text"></small>
+                                </span>
                             </div>
                         </div>
 
@@ -69,6 +78,16 @@
                     data: data,
                     success: function() {
                         location.href = '{{ route('user.index') }}';
+                    },
+                    error: function(xhr, status, error) {
+                        if (xhr.status == 422) {
+                            $(".error").addClass('d-none');
+                            $(".error_text").text('');
+                            $.each(xhr.responseJSON.errors, function(key, value) {
+                                $("." + key + "_error").removeClass('d-none');
+                                $("." + key + "_error_text").text(value[0]);
+                            });
+                        }
                     }
                 });
             })

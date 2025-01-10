@@ -38,6 +38,13 @@ class ExpenseController extends Controller
 
     public function store(Request $request, Project $project)
     {
+        $request->validate([
+            'description'  => 'required|max:5000',
+            'date'         => 'required|date',
+            'amount'       => 'required|numeric|min:0',
+            'type'         => 'required|in:travel,equipment,miscellaneous'
+        ]);
+
         $expense = new Expense();
         $expense->project_id        = $project->id;
         $expense->description       = $request->description;
@@ -64,6 +71,13 @@ class ExpenseController extends Controller
 
     public function update(Request $request, Project $project, Expense $expense)
     {
+        $request->validate([
+            'description'  => 'required|max:5000',
+            'date'         => 'required|date',
+            'amount'       => 'required|numeric|min:0',
+            'type'         => 'required|in:travel,equipment,miscellaneous'
+        ]);
+
         $expense->description       = $request->description;
         $expense->date              = $request->date;
         $expense->type              = $request->type;

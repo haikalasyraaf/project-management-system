@@ -33,18 +33,30 @@
                                             <option value="{{ $project->id }}" data-budget={{ $project->projectCost() - $project->paidCost() }}>{{ $project->title }}</option>
                                         @endforeach
                                     </select>
+                                    <span class="text-danger d-none error project_id_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text project_id_error_text"></small>
+                                    </span>
                                 </div>
                                 <div class="col-12 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Description') }}</label>
                                     <textarea name="description" class="form-control" rows="3" placeholder="{{ __('Enter project description here') }}"></textarea>                                    
+                                    <span class="text-danger d-none error description_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text description_error_text"></small>
+                                    </span>
                                 </div>
                                 <div class="col-12 col-md-4 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Invoice Date') }}</label>
                                     <input type="date" id="date" name="date" class="form-control" value="{{ old('date') }}">
+                                    <span class="text-danger d-none error date_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text date_error_text"></small>
+                                    </span>
                                 </div>
                                 <div class="col-12 col-md-4 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Due Date') }}</label>
                                     <input type="date" id="due_date" name="due_date" class="form-control" value="{{ old('date') }}">
+                                    <span class="text-danger d-none error due_date_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text due_date_error_text"></small>
+                                    </span>
                                 </div>
                                 <div class="col-12 col-md-4 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Amount') }}</label>
@@ -52,6 +64,9 @@
                                         <span class="input-group-text">RM</span>
                                         <input type="number" id="amount" name="amount" class="form-control" placeholder="0.00">
                                     </div>
+                                    <span class="text-danger d-none error amount_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text amount_error_text"></small>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -81,6 +96,16 @@
                     data: data,
                     success: function() {
                         location.href = '{{ route('invoice.index') }}';
+                    },
+                    error: function(xhr, status, error) {
+                        if (xhr.status == 422) {
+                            $(".error").addClass('d-none');
+                            $(".error_text").text('');
+                            $.each(xhr.responseJSON.errors, function(key, value) {
+                                $("." + key + "_error").removeClass('d-none');
+                                $("." + key + "_error_text").text(value[0]);
+                            });
+                        }
                     }
                 });
             });

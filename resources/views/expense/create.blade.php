@@ -28,10 +28,16 @@
                                 <div class="col-12 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Description') }}</label>
                                     <textarea name="description" class="form-control" rows="3" placeholder="{{ __('Enter project description here') }}"></textarea>                                    
+                                    <span class="text-danger d-none error description_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text description_error_text"></small>
+                                    </span>
                                 </div>
                                 <div class="col-12 col-md-4 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Date') }}</label>
                                     <input type="date" name="date" class="form-control" value="{{ old('start_date') }}">
+                                    <span class="text-danger d-none error date_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text date_error_text"></small>
+                                    </span>
                                 </div>
                                 <div class="col-12 col-md-4 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Expense Type') }}</label>
@@ -41,6 +47,9 @@
                                         <option value="equipment">{{ __('Equipment') }}</option>
                                         <option value="miscellaneous">{{ __('Miscellaneous') }}</option>
                                     </select>
+                                    <span class="text-danger d-none error type_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text type_error_text"></small>
+                                    </span>
                                 </div>
                                 <div class="col-12 col-md-4 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Amount') }} <small>(Balance Budget: RM{{ $project->remainingBudget() }})</small></label>
@@ -48,11 +57,17 @@
                                         <span class="input-group-text">RM</span>
                                         <input type="number" id="amount" name="amount" class="form-control" placeholder="0.00">
                                     </div>
-                                    <small class="text-warning exceed-warning d-none"><i data-feather="alert-triangle" class="me-2"></i>Amount entered exceeding the budget</small>
+                                    <small class="text-warning exceed-warning d-none"><i data-feather="alert-triangle" class="mx-2"></i>Amount entered exceeding the budget <br></small>
+                                    <span class="text-danger d-none error amount_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text amount_error_text"></small>
+                                    </span>
                                 </div>
                                 <div class="col-12 mb-2">
                                     <label for="" class="form-label form-label-sm mb-0">{{ __('Attachment') }}</label>
                                     <input type="file" name="attachment" class="form-control">
+                                    <span class="text-danger d-none error attachment_error">
+                                        <i data-feather='alert-circle' class="mx-2"></i><small class="error_text attachment_error_text"></small>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -82,6 +97,16 @@
                     data: data,
                     success: function() {
                         location.href = '{{ route('expense.index', $project->id) }}';
+                    },
+                    error: function(xhr, status, error) {
+                        if (xhr.status == 422) {
+                            $(".error").addClass('d-none');
+                            $(".error_text").text('');
+                            $.each(xhr.responseJSON.errors, function(key, value) {
+                                $("." + key + "_error").removeClass('d-none');
+                                $("." + key + "_error_text").text(value[0]);
+                            });
+                        }
                     }
                 });
             });

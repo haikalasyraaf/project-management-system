@@ -37,6 +37,16 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'title'        => 'required|max:255',
+            'description'  => 'max:5000',
+            'start_date'   => 'required|date|before_or_equal:end_date',
+            'end_date'     => 'required|date|after_or_equal:start_date',
+            'assign_user'  => 'required|array|min:1',
+            'budget'       => 'required|numeric|min:0',
+            'status'       => 'required|in:0,1,2',
+        ]);
+
         $project = new Project();
         $project->title = $request->title;
         $project->description = $request->description;
@@ -67,6 +77,16 @@ class ProjectController extends Controller
 
     public function update(Request $request, Project $project)
     {
+        $request->validate([
+            'title'        => 'required|max:255',
+            'description'  => 'max:5000',
+            'start_date'   => 'required|date|before_or_equal:end_date',
+            'end_date'     => 'required|date|after_or_equal:start_date',
+            'assign_user'  => 'required|array|min:1',
+            'budget'       => 'required|numeric|min:0',
+            'status'       => 'required|in:0,1,2',
+        ]);
+
         $project->title = $request->title;
         $project->description = $request->description;
         $project->start_date  = $request->start_date;

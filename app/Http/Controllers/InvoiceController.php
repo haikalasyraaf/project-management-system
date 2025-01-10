@@ -39,6 +39,14 @@ class InvoiceController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'project_id'   => 'required',
+            'date'         => 'required|date|before_or_equal:due_date',
+            'due_date'     => 'required|date|after_or_equal:date',
+            'description'  => 'max:5000',
+            'amount'       => 'required|numeric|min:0'
+        ]);
+
         $project = Project::find($request->project_id);
 
         $invoice = new Invoice();
