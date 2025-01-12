@@ -24,5 +24,14 @@ class RoleSeeder extends Seeder
 
         $permissions = Permission::pluck('id', 'id')->all();
         $admin->syncPermissions($permissions);
+
+        $userPermissions = Permission::whereIn('name', [
+            'view-project', 
+            'view-expense', 
+            'create-expense',
+            'edit-expense',
+            'delete-expense'
+        ])->get();
+        $user->syncPermissions($userPermissions);   
     }
 }
